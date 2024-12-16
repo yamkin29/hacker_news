@@ -13,6 +13,7 @@ export interface News {
     score?: number;
     descendants?: number;
     type?: string;
+    kids?: number[];
 }
 
 const MainPage = () => {
