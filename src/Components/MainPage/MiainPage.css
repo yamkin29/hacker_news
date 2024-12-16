@@ -2,10 +2,14 @@
     background-color: orange;
     min-height: 5%;
     width: 100%;
+    display: flex;
+    justify-content: space-between;
 }
 
 .header__title {
     display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .header__title__image {
@@ -13,7 +17,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 1px solid white;
     background-size: cover;
     height: 100%;
 }
@@ -24,4 +27,8 @@
     justify-content: center;
     align-items: center;
     height: 100%;
+}
+
+.header__refresh {
+    margin: 2px;
 }

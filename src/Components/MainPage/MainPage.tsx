@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import './MiainPage.css';
-import {Table} from "antd";
+import {Button, Table} from "antd";
 import {ColumnsType} from "antd/es/table";
 import { useNavigate } from 'react-router-dom';
 
@@ -18,7 +18,12 @@ export interface News {
 
 const MainPage = () => {
     const [news, setNews] = React.useState<News[]>([]);
+    const [refreshNews, setRefreshNews] = React.useState<boolean>(false);
     const navigate = useNavigate();
+
+    const handleRefreshClick = () => {
+        setRefreshNews(prev => !prev);
+    }
 
     useEffect(() => {
         const fetchTopStories = async () => {
@@ -46,6 +51,14 @@ const MainPage = () => {
 
         fetchTopStories();
 
+    }, [refreshNews]);
+
+    useEffect(() => {
+        const refreshInterval = setInterval(() => {
+            setRefreshNews(prev => !prev);
+        }, 3000);
+
+        return () => clearInterval(refreshInterval);
     }, []);
 
     const columns: ColumnsType<News> = [
@@ -90,6 +103,13 @@ const MainPage = () => {
                     <div className={'header__title__text'}>
                         Hacker News
                     </div>
+                </div>
+                <div className={'header__refresh'}>
+                    <Button
+                        onClick={handleRefreshClick}
+                    >
+                        Refresh
+                    </Button>
                 </div>
             </div>
             <div className={'main-container'}>
