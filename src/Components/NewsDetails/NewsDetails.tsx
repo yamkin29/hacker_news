@@ -1,7 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {News} from "../MainPage/MainPage";
-import {Tree, TreeDataNode} from "antd";
+import {Button, Tree, TreeDataNode} from "antd";
+import '../NewsDetails/NewDetails.css'
+import styled from 'styled-components';
 
 interface CommentItem {
     id: number;
@@ -18,6 +20,12 @@ const NewsDetails: React.FC = () => {
     const [news, setNews] = useState<News | null>(null);
     const [commentsTree, setCommentsTree] = useState<TreeDataNode[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
+    const [refreshComments, setRefreshComments] = useState<boolean>(false);
+    const navigate = useNavigate();
+
+    const handleRefreshClick = () => {
+        setRefreshComments(prev => !prev);
+    }
 
     const fetchCommentTree = async (commentId: number): Promise<TreeDataNode> => {
         const response = await fetch(`https://hacker-news.firebaseio.com/v0/item/${commentId}.json?print=pretty`)
@@ -96,15 +104,24 @@ const NewsDetails: React.FC = () => {
 
         fetchComments();
 
-    }, [news]);
+    }, [news, refreshComments]);
 
     if (!news || loading) {
         return <div>Loading...</div>;
     }
 
+    const CustomButton = styled(Button)`
+        margin: 2px;
+    `;
+    
+
     return (
         <div>
             <div>
+                <div className={'buttons-container'}>
+                    <CustomButton onClick={() => navigate('/')}>Back to News</CustomButton>
+                    <Button onClick={handleRefreshClick}>Refresh comments</Button>
+                </div>
                 <h1>{news.title || 'No Title'}</h1>
                 <p><strong>Author:</strong> {news.by}</p>
                 <p><strong>Score:</strong> {news.score}</p>

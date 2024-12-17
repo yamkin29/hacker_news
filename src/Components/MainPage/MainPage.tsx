@@ -56,7 +56,7 @@ const MainPage = () => {
     useEffect(() => {
         const refreshInterval = setInterval(() => {
             setRefreshNews(prev => !prev);
-        }, 3000);
+        }, 60000);
 
         return () => clearInterval(refreshInterval);
     }, []);
